@@ -3,12 +3,14 @@ function [I,lambda_] = smgmMI(X,Y,varargin)
 %   [I,lambda_] = SMGMMIRATE(X,Y,...) Returns the Skaggs, McNaughton, 
 %   Gothard and Markus information rate of Y across X. X and Y are N long 
 %   vectors, where N is the number of samples. I is the information rate in 
-%   bits per sample. lambda_ is the average Y per sample.
+%   bits per second. lambda_ is the average Y. To convert to bits per
+%   action potential, use I/lambda_.
 %
 %   Optional Parameters
 %   x_min (min(X)) - The lower bounds for the binning of X
 %   x_max (max(X)) - The upper bounds for the binning of X
 %   n_bin (60) - The number of bins across X
+%   Fs - The sample frequency, used only for spiking data
 %
 % See Skaggs, W.E., McNaughton, B.L., and Gothard, K.M. (1993). An 
 %   Information-Theoretic Approach to Deciphering the Hippocampal Code. In 
@@ -36,6 +38,7 @@ ip = inputParser;
 ip.addParameter('x_min',min(X));
 ip.addParameter('x_max',max(X));
 ip.addParameter('n_bin',60);
+ip.addParameter('Fs',1);
 ip.parse(varargin{:});
 for j=fields(ip.Results)'
    eval(sprintf('%s=ip.Results.%s;',j{1},j{1})); 
@@ -43,7 +46,7 @@ end
 
 % Make maps
 [oc,~,bin] = histcounts(X,linspace(x_min,x_max,n_bin+1));
-lambdai = sum((bin==1:n_bin).*Y)./oc;
+lambdai = sum((bin==1:n_bin).*Y)./oc*Fs;
 oc = oc/sum(oc);% Occupancy
 lambda_ = nansum(lambdai.*oc);% Mean value
 I = nansum(lambdai.*oc.*(log(lambdai)-log(lambda_)))/log(2);% Information
