@@ -127,7 +127,7 @@ if verbose, fprintf('%s Building spike train...\n',datestr(now)); end
 cel.spkVid = histc(cel.spkTs,tsVid);
 
 % Solve for kernel
-[params.a,params.b,params.riseTauHat,params.fallTauHat] = fluorescentKernel(params.riseTau,params.fallTau);
+[params.a,params.b,params.riseTauHat,params.fallTauHat] = florescentKernel(params.riseTau,params.fallTau);
 
 % Make fluorescent trace
 cel.Fc = spk2F(spk...

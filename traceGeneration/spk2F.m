@@ -38,9 +38,9 @@ end
 
 % Find the minimum size for a precise kernel
 if ~isempty(riseTau)&&~isempty(fallTau)
-   [a,b,riseTauHat,fallTauHat] = fluorescentKernel(riseTau,fallTau); 
+   [a,b,riseTauHat,fallTauHat] = florescentKernel(riseTau,fallTau); 
 else
-   [~,~,riseTauHat,fallTauHat] = fluorescentKernel(a,b,true); 
+   [~,~,riseTauHat,fallTauHat] = florescentKernel(a,b,true); 
 end
 
 kernelt = fzero(@(t)doubleExp(a,b,exp(t))-1e-6,min(log(riseTauHat+fallTauHat)+log(100),log(300)));
