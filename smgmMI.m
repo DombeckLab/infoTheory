@@ -46,7 +46,7 @@ end
 
 % Make maps
 [oc,~,bin] = histcounts(X,linspace(x_min,x_max,n_bin+1));
-lambdai = sum((bin==1:n_bin).*Y)./oc*Fs;
+lambdai = sum((bin==1:n_bin).*Y)./oc*Fs;% Rate/intensity map
 oc = oc/sum(oc);% Occupancy
 lambda_ = nansum(lambdai.*oc);% Mean value
 I = nansum(lambdai.*oc.*(log(lambdai)-log(lambda_)))/log(2);% Information

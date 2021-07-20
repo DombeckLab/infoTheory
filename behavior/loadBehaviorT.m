@@ -13,8 +13,8 @@ function [ x,behaviorIs ] = loadBehaviorT( time,varargin )
 % RETURNS
 % x - The position of the animal, sampled at 1 kH
 % behaviorIs - The indices of the behavior, used to recreate the behavior
-global behavior;
-global nBehavior;
+% global behavior;
+% global nBehavior;
 
 ip = inputParser;
 ip.addParameter('behaviorIs',[]);
@@ -27,21 +27,23 @@ end
 
 getBehaviorIs = isempty(behaviorIs);
 
-if isempty(behavior)
-    if isempty(behaviorPath)
-        [behavior{1},behavior{2}]=uigetfile('*.mat','Pick behavior file');
-        behavior=matfile([behavior{2} behavior{1}]);
-    end
-    if ~isequal(behaviorPath(end-3:end),'.tif')
-       throw(MException('infoTheory:badPath','behaviorPath must target a .mat file')); 
-    end
-    nBehavior = prod(size(behavior,'x'));
+% if isempty(behavior)
+if isempty(behaviorPath)
+    [behavior{1},behavior{2}]=uigetfile('*.mat','Pick behavior file');
+    behaviorPath = [behavior{2} behavior{1}];
 end
-    
+behavior = matfile(behaviorPath);
+
+if ~isequal(behaviorPath(end-3:end),'.mat')
+    throw(MException('infoTheory:badPath','behaviorPath must target a .mat file'));
+end
+nBehavior = prod(size(behavior,'x'));
+% end
+
 if ~exist('time','var')
-   x = [];
-   behaviorIs = [];
-   return;
+    x = [];
+    behaviorIs = [];
+    return;
 end
 
 x = [];
