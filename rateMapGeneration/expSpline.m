@@ -20,7 +20,7 @@ end
 
 ip = inputParser;
 ip.addParameter('trackLength',0);
-ip.addParamter('trackStart',0);
+ip.addParameter('trackStart',0);
 ip.parse(varargin{:});
 for j=fields(ip.Results)'
     eval([j{1} '=ip.Results.' j{1} ';']);
